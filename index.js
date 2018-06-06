@@ -1,10 +1,10 @@
 let body = document.querySelector('body');
-//body.style.width = '100vh';
 body.style.display = 'flex';
 body.style.flexWrap = 'wrap';
 body.style.justifyContent = 'center';
 body.style.fontFamily = 'Pokemon';
 body.style.margin = '0';
+body.style.backgroundColor = 'lightyellow'
 
 
 let header = document.createElement('h');
@@ -20,7 +20,6 @@ document.body.appendChild(nav);
 nav.style.backgroundColor = 'lightyellow';
 nav.style.flex = '1';
 nav.style.height = '350px';
-nav.style.padding = '10px 0 0 10px';
 nav.style.borderRadius = '10%';
 nav.style.backgroundImage = 'url(https://vignette.wikia.nocookie.net/pokemon/images/1/1e/Dratini-GO.png/revision/latest?cb=20160809155728)'
 nav.style.backgroundSize = 'cover';
@@ -50,11 +49,36 @@ footer.style.height = '188px';
 footer.style.padding = '10px 0 0 10px';
 footer.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/269px-International_Pok%C3%A9mon_logo.svg.png)'
 
+let realFooter = document.createElement('footer');
+document.body.appendChild(realFooter);
+realFooter.style.width = '100%';
+realFooter.style.backgroundColor = 'limegreen';
+realFooter.style.height = '100px';
+
+let footDiv = document.createElement('div');
+realFooter.appendChild(footDiv);
+footDiv.style.display = 'flex';
+footDiv.style.justifyContent = 'center'
+footDiv.style.paddingTop = '40px'
+
+
+//bottombuttons
+let apiButton = document.createElement('a');
+apiButton.setAttribute('href', 'https://pokeapi.co/');
+apiButton.innerHTML = 'Source API';
+apiButton.style.margin = '10px';
+apiButton.style.color = 'blue';
+footDiv.appendChild(apiButton)
+
+let ghButton = document.createElement('a');
+ghButton.setAttribute('href', 'https://github.com/tkozemzak');
+ghButton.innerHTML = "Tim's GitHub";
+ghButton.style.margin = '10px';
+ghButton.style.color = 'blue';
+footDiv.appendChild(ghButton)
 
 
 //pokefetch
-
-
 let pokeInput = document.createElement('input');
 pokeInput.setAttribute('placeholder', 'Please enter a number from 1 to 802');
 article.appendChild(pokeInput);
@@ -65,7 +89,7 @@ pokeInput.style.fontFamily = 'Pokemon';
 
 
 let catchThatPokemon = document.createElement('button');
-catchThatPokemon.innerText = 'Find That Pokemon!';
+catchThatPokemon.innerText = 'Catch That Pokemon!';
 catchThatPokemon.style.textAlign = 'center';
 article.appendChild(catchThatPokemon);
 catchThatPokemon.style.fontSize = '16px';
@@ -111,6 +135,30 @@ catchThatPokemon.addEventListener('click', function() {
     pokemonImage.style.backgroundColor = 'black';
   })
 })
+
+
+
+pokeInput.addEventListener('keypress', function(e){
+    var key = e.which || e.keyCode;
+    if (key === 13) {
+      fetch(`https://pokeapi.co/api/v2/pokemon/${pokeInput.value}`)
+      .then(data => {
+        return data.json()
+      }).then(results => {
+        console.log(results)
+
+        pokemonOutput.innerText = 'Name: ' + results.name[0].toUpperCase() + results.name.slice(1);
+        pokemonOutput.style.fontWeight = '500';
+        pokemonP1.innerText = 'Height: ' + results.height;
+        pokemonP2.innerText = 'Weight: ' + results.weight;
+        pokemonP3.innerText = 'Base Experience: ' + results.base_experience;
+        pokemonP4.innerText = 'ID: ' + results.id;
+        pokemonP5.innerText = 'Order: ' + results.order;
+        pokemonImage.setAttribute('src', results.sprites.front_default)
+        pokemonImage.style.backgroundColor = 'black';
+      })
+    }
+    });
 
 
 //default fetch
