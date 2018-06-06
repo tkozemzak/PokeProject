@@ -139,7 +139,7 @@ catchThatPokemon.addEventListener('click', function() {
 
 
 pokeInput.addEventListener('keypress', function(e){
-    var key = e.which || e.keyCode;
+    var key = e.keyCode;
     if (key === 13) {
       fetch(`https://pokeapi.co/api/v2/pokemon/${pokeInput.value}`)
       .then(data => {
@@ -160,9 +160,16 @@ pokeInput.addEventListener('keypress', function(e){
     }
     });
 
+//random number generator
+    function getRandom(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
 
 //default fetch
-fetch('https://pokeapi.co/api/v2/pokemon/151')
+fetch(`https://pokeapi.co/api/v2/pokemon/${getRandom(1,802)}`)
  .then((data) => {
    return data.json()
  }).then((results) => {
